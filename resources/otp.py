@@ -31,5 +31,5 @@ class EndTrip(MethodView):
 @blp.route("/information/<int:cycleid>")
 class Infomation(MethodView):
     def get(self, cycleid):
-        return endTrip[cycleid]
+        return {"endTrip": endTrip[cycleid]}
 
