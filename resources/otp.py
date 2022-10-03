@@ -4,7 +4,7 @@ from flask_smorest import Blueprint, abort
 from db import otp, endTrip
 from functions.functions import otpGenerator
 
-blp = Blueprint("stores", __name__, description="Operations on stores.")
+blp = Blueprint("otp", __name__, description="OTP generation.")
 
 @blp.route("/otp_gen")
 class OtpGenerator(MethodView):
@@ -27,4 +27,9 @@ class EndTrip(MethodView):
         otp[cycleid] = None
         endTrip[cycleid] = 1
         return {"message": "Trip ended."}
+
+@blp.route("/information/<int:cycleid>")
+class Infomation(MethodView):
+    def get(self, cycleid):
+        return endTrip[cycleid]
 
