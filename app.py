@@ -1,4 +1,3 @@
-from tokenize import Triple
 from flask import Flask
 from flask_smorest import Api
 from resources.otp import blp as OTPBlueprint

@@ -36,11 +36,13 @@ class Infomation(MethodView):
 
     def post(self, cycleid):
         request_data = request.get_json()
-        correctOTPEntered = request_data["correctOTPEntered"]
-        validation[cycleid] = correctOTPEntered
-        return {"message": "Information sent."}, 201
+        if endTrip[cycleid] != 1:
+            correctOTPEntered = request_data["correctOTPEntered"]
+            validation[cycleid] = correctOTPEntered
+            return {"message": "Information sent."}, 201
+        return {"message": "Cycle not in use."}, 400
 
 @blp.route("/validation/<int:cycleid>")
 class ValidateOTP(MethodView):
     def get(self, cycleid):
-        return {"Validation": validation[cycleid]}
+        return {"validation": validation[cycleid]}
