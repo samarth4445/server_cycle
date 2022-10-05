@@ -1,2 +1,3 @@
 otp = {}
 endTrip = {}
+validation = {}

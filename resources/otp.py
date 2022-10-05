@@ -1,7 +1,7 @@
 from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from db import otp, endTrip
+from db import otp, endTrip, validation
 from functions.functions import otpGenerator
 
 blp = Blueprint("otp", __name__, description="OTP generation.")
@@ -10,9 +10,10 @@ blp = Blueprint("otp", __name__, description="OTP generation.")
 class OtpGenerator(MethodView):
     def post(self):
         request_data = request.get_json()
-        otp[request_data["cycleid"]] = otpGenerator()
-        endTrip[request_data["cycleid"]] = 0
-        return {"otp": otp[request_data["cycleid"]]}, 201
+        if otp[request_data["cycleid"]] == None:
+            otp[request_data["cycleid"]] = otpGenerator()
+            endTrip[request_data["cycleid"]] = 0
+            return {"otp": otp[request_data["cycleid"]]}, 201
 
 @blp.route("/otp_get/<int:cycleid>")
 class OtpGet(MethodView):
@@ -31,5 +32,15 @@ class EndTrip(MethodView):
 @blp.route("/information/<int:cycleid>")
 class Infomation(MethodView):
     def get(self, cycleid):
-        return {"endTrip": endTrip[cycleid]}
+        return {"endTrip": endTrip[cycleid]}, 200
 
+    def post(self, cycleid):
+        request_data = request.get_json()
+        correctOTPEntered = request_data["correctOTPEntered"]
+        validation[cycleid] = correctOTPEntered
+        return {"message": "Information sent."}, 201
+
+@blp.route("/validation/<int:cycleid>")
+class ValidateOTP(MethodView):
+    def get(self, cycleid):
+        return {"Validation": validation[cycleid]}
