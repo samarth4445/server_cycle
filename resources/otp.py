@@ -10,7 +10,7 @@ blp = Blueprint("otp", __name__, description="OTP generation.")
 class OtpGenerator(MethodView):
     def post(self):
         request_data = request.get_json()
-        if otp[request_data["cycleid"]] == None:
+        if otp[request_data["cycleid"]] == None or request_data["cycleid"] not in otp:
             otp[request_data["cycleid"]] = otpGenerator()
             endTrip[request_data["cycleid"]] = 0
             return {"otp": otp[request_data["cycleid"]]}, 201
