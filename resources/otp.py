@@ -26,6 +26,7 @@ class EndTrip(MethodView):
     def get(self, cycleid):
         otp[cycleid] = None
         endTrip[cycleid] = 1
+        validation[cycleid] = 0
         return {"message": "Trip ended."}
 
 @blp.route("/information/<int:cycleid>")
