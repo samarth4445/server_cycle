@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_smorest import Api
 from resources.otp import blp as OTPBlueprint
+from resources.position import blp as LocationBlueprint
 
 app = Flask(__name__)
 
@@ -15,4 +16,5 @@ app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-
 api = Api(app)
 
 api.register_blueprint(OTPBlueprint)
+api.register_blueprint(LocationBlueprint)
 

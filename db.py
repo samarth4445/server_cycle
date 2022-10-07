@@ -1,3 +1,4 @@
 otp = {}
 endTrip = {}
 validation = {}
+position = []
