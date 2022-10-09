@@ -1,7 +1,7 @@
 from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from db import otp, endTrip, validation
+from db import otp, endTrip, validation, position
 from functions.functions import otpGenerator
 
 blp = Blueprint("otp", __name__, description="OTP generation.")
@@ -27,6 +27,11 @@ class EndTrip(MethodView):
         otp[cycleid] = None
         endTrip[cycleid] = 1
         validation[cycleid] = 0
+
+        for i in position:
+            if cycleid == i["cycleid"]:
+                i["fine"] = False
+    
         return {"message": "Trip ended."}
 
 @blp.route("/information/<int:cycleid>")
@@ -45,4 +50,7 @@ class Infomation(MethodView):
 @blp.route("/validation/<int:cycleid>")
 class ValidateOTP(MethodView):
     def get(self, cycleid):
+        while True:
+            if validation[cycleid] == 1:
+                break
         return {"validation": validation[cycleid]}
