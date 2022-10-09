@@ -15,7 +15,7 @@ class Location(MethodView):
     def post(self):
         request_data = request.get_json()
 
-        centre = (18.492583, 74.0255370)
+        centre = (18.492583, 74.0255360)
         current_pos = (float(request_data["longitude"]), float(request_data["latitude"]))
 
         position_magnitude = geopy.distance.geodesic(centre, current_pos).km
