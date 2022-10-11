@@ -2,7 +2,12 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from db import otp, endTrip, validation, position
-from functions.functions import otpGenerator
+from functions.functions import otpGenerator, validate
+import threading
+import asyncio
+
+# docker build -t gocycle-server .
+# docker run -dp 5005:5000 -w /app -v "$(pwd):/app" gocycle-server
 
 blp = Blueprint("otp", __name__, description="OTP generation.")
 
@@ -50,7 +55,7 @@ class Infomation(MethodView):
 @blp.route("/validation/<int:cycleid>")
 class ValidateOTP(MethodView):
     def get(self, cycleid):
-        while True:
-            if validation[cycleid] == 1:
-                break
-        return {"validation": validation[cycleid]}
+        asyncio.set_event_loop(asyncio.new_event_loop())
+        loop = asyncio.get_event_loop()
+        result = loop.run_until_complete(validate(cycleid))
+        return {"validation": result}
