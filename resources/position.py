@@ -37,3 +37,9 @@ class Location(MethodView):
 
         position.append({"longitude": request_data["longitude"], "latitude": request_data["latitude"], "cycleid": request_data["cycleid"], "fine": False})
         return {"message": "Information sent."}, 201
+
+@blp.route("/clear")
+class ClearLocation(MethodView):
+    def delete(self):
+        position.clear()
+        return {"message": "Locations cleared."}, 201
